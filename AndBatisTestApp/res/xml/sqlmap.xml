@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlmap file="sample1.db" version="1">
+    <default-create>
+        <table name="table01">
+            <column name="col01" type="integer" key="primary" auto_increment="true" />
+			<column name="col02" type="text" default="NO" />
+        </table>
+    </default-create>
+    
+    <statement id="select001">
+        SELECT * FROM table01
+    </statement>
+    
+    <statement id="select002">
+        <![CDATA[
+            SELECT * FROM table01
+        ]]>
+    </statement>
+
+	<statement id="select003">
+		<![CDATA[
+		    SELECT * FROM table01
+			WHERE col01 = #param1#
+		]]>
+	</statement>
+
+	<statement id="insert001">
+		<![CDATA[
+			INSERT INTO table01(col02)
+			VALUES(#col1data#)
+		]]>
+	</statement>
+    
+</sqlmap>
