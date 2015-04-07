@@ -1,13 +1,12 @@
 package com.example.andbatistest;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import kr.hyosang.andbatis.AndBatis;
 import kr.hyosang.andbatis.AndBatisException;
 import kr.hyosang.andbatis.SqlMap;
-import kr.hyosang.andbatis.data.TableRow;
+import kr.hyosang.andbatis.data.SqlResultSet;
 import kr.hyosang.andbatis.util.Logger;
 import android.app.Activity;
 import android.os.Bundle;
@@ -34,8 +33,8 @@ public class MainActivity extends Activity {
             Table01Holder data = new Table01Holder("this data inserted " + System.currentTimeMillis());
             sql.insert("table01", data);
             
-            List<TableRow> list = sql.select("select001", null);
-            for(TableRow row : list) {
+            SqlResultSet list = sql.select("select001", null);
+            for(String [] row : list) {
                 Logger.d("ROW = " + row);
             }
         }catch(AndBatisException e) {

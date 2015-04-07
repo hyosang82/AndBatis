@@ -11,7 +11,7 @@ import java.util.Map;
 import kr.hyosang.andbatis.data.Column;
 import kr.hyosang.andbatis.data.Statement;
 import kr.hyosang.andbatis.data.Table;
-import kr.hyosang.andbatis.data.TableRow;
+import kr.hyosang.andbatis.data.SqlResultSet;
 import kr.hyosang.andbatis.util.Logger;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,26 +60,14 @@ public class SqlMap {
         db.releaseReference();
     }
     
-    public List<TableRow> select(String sqlId, Map<String, Object> params) throws AndBatisException {
+    public SqlResultSet select(String sqlId, Map<String, Object> params) throws AndBatisException {
         String query = buildQuery(sqlId, params);
         
         SQLiteDatabase db = mHelper.getReadableDatabase();
         
         Cursor c = db.rawQuery(query, null);
         
-        String [] cols = c.getColumnNames();
-        
-        List<TableRow> result = new ArrayList<TableRow>();
-        
-        while(c.moveToNext()) {
-            TableRow row = new TableRow();
-            
-            for(int i=0;i<cols.length;i++) {
-                row.put(cols[i], c.getString(i));
-            }
-            
-            result.add(row);
-        }
+        SqlResultSet result = new SqlResultSet(c);
         
         c.close();
         
@@ -121,7 +109,7 @@ public class SqlMap {
                     Object obj = null;
                     
                     try {
-                        obj = f.get("fn");
+                        obj = f.get(dataHolder);
                     
                         if(obj instanceof String) {
                             values.put(fn, (String)obj);
